@@ -43,7 +43,8 @@ class App extends Component {
     .then(results => {
       // console.log(results)
       this.setState({allRestaurants: results.data.response.groups[0].items,
-                    foundRestaurants: results.data.response.groups[0].items},
+                    // foundRestaurants: results.data.response.groups[0].items
+                    },
                     this.loadMap);
       // console.log(this.state.allRestaurants, this.state.foundRestaurants)
     })

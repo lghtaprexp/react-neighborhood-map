@@ -6,7 +6,7 @@ class RestaurantSidebar extends Component {
     super(props);
     this.state = {
       // allRestaurants: [],
-      // foundRestaurants: [],
+      foundRestaurants: [],
       // markers: [],
       search: ''
     }
@@ -17,12 +17,11 @@ class RestaurantSidebar extends Component {
   //   // Set marker visibility to true to show all markers
   //   this.props.markers.map((marker) => marker.setVisible(true));
 
-  //   let allRestaurants = this.props.allRestaurants;
   //   if(search) {
   //     // To reduce error, all user input will be converted to lowercase
-  //     let searchResults = allRestaurants.filter(restaurant => restaurant.venue.name.toLowerCase().includes(search.toLowerCase()));
-  //     this.setState({allRestaurants: searchResults});
-  //     this.props.updateRestaurant(searchResults);
+  //     let searchResults = this.props.allRestaurants.filter(restaurant => restaurant.venue.name.toLowerCase().includes(search.toLowerCase()));
+  //     this.setState({foundRestaurants: searchResults});
+
   //     // Create variable to hide markers from user input
   //     // Using the every() method to check if all element in the array pass the test
   //     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every
@@ -34,7 +33,7 @@ class RestaurantSidebar extends Component {
   //   } else {
   //     // Keep markers display for results from search
       
-  //     this.setState({allRestaurants: allRestaurants});
+  //     this.setState({searchResults: this.props.allRestaurants});
   //     // Set visibility of markers from search to visible
   //     this.props.markers.forEach(marker => marker.setVisible(true));
   //   }
