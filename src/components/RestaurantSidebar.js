@@ -5,45 +5,40 @@ class RestaurantSidebar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // allRestaurants: [],
-      foundRestaurants: [],
-      // markers: [],
+      foundRestaurants: this.props.allRestaurants,
       search: ''
     }
   }
 
-  // updateSearch = (search) => {
-  //   this.setState({search});
-  //   // Set marker visibility to true to show all markers
-  //   this.props.markers.map((marker) => marker.setVisible(true));
+  // Filter and search for restaurant from the sidebar
+  updateSearch = (search) => {
+    // Set marker visibility to true to show all markers
+    // Create a list of found restaurant from all the
+    // restaurants in the area    
+    // To reduce error, all user input will be converted to lowercase
+    let searchResults = this.props.allRestaurants.filter(restaurant => restaurant.venue.name.toLowerCase().includes(search.toLowerCase()));
+    // Set the result of foundRestaurants to the filtered
+    // search result
 
-  //   if(search) {
-  //     // To reduce error, all user input will be converted to lowercase
-  //     let searchResults = this.props.allRestaurants.filter(restaurant => restaurant.venue.name.toLowerCase().includes(search.toLowerCase()));
-  //     this.setState({foundRestaurants: searchResults});
-
-  //     // Create variable to hide markers from user input
-  //     // Using the every() method to check if all element in the array pass the test
-  //     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every
-  //     let hideMarkers = this.props.markers.filter(marker => searchResults.every(restaurant =>  restaurant.venue.name !== marker.title));
-
-  //     // Loop over the markers and hide the markers that doesn't match
-  //     // what the user type in search
-  //     hideMarkers.forEach(marker => marker.setVisible(false));
-  //   } else {
-  //     // Keep markers display for results from search
-      
-  //     this.setState({searchResults: this.props.allRestaurants});
-  //     // Set visibility of markers from search to visible
-  //     this.props.markers.forEach(marker => marker.setVisible(true));
-  //   }
-  // }
+    // Use a loop to set visibility of markers
+    // base on what the user input in search bar
+    this.props.markers.forEach(marker => {
+    if(marker.name.toLowerCase().includes(search.toLowerCase())) {
+      marker.setVisible(true);
+    } else {
+      marker.setVisible(false);
+    }
+    // console.log(marker);
+    });
+    this.setState({foundRestaurants: searchResults, search});
+    console.log(this.foundRestaurants)    
+  }
 
   // Click event allows user to click on item from filtered list and
   // a marker correlated to the item clicked will animate
   restaurantItemClick = (item) => {
     this.props.markers.map(marker => {
-      if(marker.title === item) {
+      if(marker.name === item) {
         window.google.maps.event.trigger(marker, "click")
       }
     })
@@ -58,12 +53,13 @@ class RestaurantSidebar extends Component {
 
   	      type="text"
   	      placeholder="Filter Restaurant By Name"
-  	      onChange={(e) => {this.props.updateSearch(e.target.value)}}
-		  value={this.props.search}
+  	      onChange={(e) => {this.updateSearch(e.target.value)}}
+		  value={this.state.search}
   	    />
   	    <ul>
-  	      {this.props.allRestaurants &&
-  	       this.props.allRestaurants.map((restaurant, index) => (
+  	      {this.state.foundRestaurants &&
+  	       this.state.foundRestaurants > 0 && 
+  	       this.state.foundRestaurants.map((restaurant, index) => (
 		     <li
 			   className="item"
 			   key={index}
