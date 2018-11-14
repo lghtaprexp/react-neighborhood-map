@@ -111,11 +111,12 @@ class App extends Component {
     // Set marker visibility to true to show all markers
     this.state.markers.map((marker) => marker.setVisible(true));
 
+    // let allRestaurants = this.state.allRestaurants;
     if(search) {
       // To reduce error, all user input will be converted to lowercase
       let searchResults = this.state.allRestaurants.filter(restaurant => restaurant.venue.name.toLowerCase().includes(search.toLowerCase()));
-      this.setState({allRestaurants: searchResults});
-
+      this.setState({foundRestaurants: searchResults});
+      // this.updateRestaurant(searchResults);
       // Create variable to hide markers from user input
       // Using the every() method to check if all element in the array pass the test
       // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every
@@ -126,20 +127,27 @@ class App extends Component {
       hideMarkers.forEach(marker => marker.setVisible(false));
     } else {
       // Keep markers display for results from search
+      
       this.setState({searchResults: this.state.allRestaurants});
       // Set visibility of markers from search to visible
       this.state.markers.forEach(marker => marker.setVisible(true));
     }
   }
 
-  /*** ***/
-  restaurantItemClick = (item) => {
-    this.state.markers.map(marker => {
-      if(marker.title === item) {
-        window.google.maps.event.trigger(marker, "click")
-      }
-    })
-  }
+  // Update restaurant list from search
+  // updateRestaurant = (newRestaurant) => {
+  //   this.setState({foundRestaurants: newRestaurant})
+  // }
+
+  // Click event allows user to click on item from filtered list and
+  // a marker correlated to the item clicked will animate
+  // restaurantItemClick = (item) => {
+  //   this.state.markers.map(marker => {
+  //     if(marker.title === item) {
+  //       window.google.maps.event.trigger(marker, "click")
+  //     }
+  //   })
+  // }
 
   render() {
     return (
@@ -152,11 +160,11 @@ class App extends Component {
         </header>        
           <RestaurantSidebar aria-label="Search Bar" role="search"
             allRestaurants={this.state.allRestaurants}
-            updateRestaurant={this.updateRestaurant}
             markers={this.state.markers}
             search={this.state.search}
-            updateSearch={this.updateSearch}
-            restaurantItemClick={this.restaurantItemClick}
+            updateSearch={this.props.updateSearch}
+            restaurantItemClick={this.props.restaurantItemClick}
+            
           />
           <Map />
       </main>
