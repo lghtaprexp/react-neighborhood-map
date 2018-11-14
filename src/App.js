@@ -161,7 +161,7 @@ class App extends Component {
         <h2>Thai Restaurants, Simi Valley</h2>
         </header>        
           <RestaurantSidebar aria-label="Search Bar" role="search"
-            allRestaurants={this.state.allRestaurants}
+            foundRestaurants={this.state.allRestaurants}
             markers={this.state.markers}
             search={this.state.search}
             updateSearch={this.props.updateSearch}

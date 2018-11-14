@@ -16,7 +16,7 @@ class RestaurantSidebar extends Component {
     // Create a list of found restaurant from all the
     // restaurants in the area    
     // To reduce error, all user input will be converted to lowercase
-    let searchResults = this.props.allRestaurants.filter(restaurant => restaurant.venue.name.toLowerCase().includes(search.toLowerCase()));
+    let searchResults = this.props.foundRestaurants.filter(restaurant => restaurant.venue.name.toLowerCase().includes(search.toLowerCase()));
     // Set the result of foundRestaurants to the filtered
     // search result
 
@@ -57,9 +57,8 @@ class RestaurantSidebar extends Component {
 		  value={this.state.search}
   	    />
   	    <ul>
-  	      {this.state.foundRestaurants &&
-  	       this.state.foundRestaurants > 0 && 
-  	       this.state.foundRestaurants.map((restaurant, index) => (
+  	      {this.props.foundRestaurants &&
+  	       this.props.foundRestaurants.map((restaurant, index) => (
 		     <li
 			   className="item"
 			   key={index}
