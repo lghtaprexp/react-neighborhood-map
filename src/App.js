@@ -1,111 +1,166 @@
 import React, { Component } from 'react';
-// import logo from './logo.svg';
 import './App.css';
-import axios from 'axios'
-import RestaurantList from './components/RestaurantList'
+import axios from 'axios';
+import RestaurantSidebar from './components/RestaurantSidebar';
+import Map from './components/Map';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       allRestaurants: [],
-      markers: []
+      foundRestaurants: [],
+      markers: [],
+      search: '',
     }
   }
 
   componentDidMount() {
-    this.getRestaurants()
+    this.getRestaurants("thai", "Simi Valley");
   }
 
+  // Load Google Maps script asynchronously
   loadMap = () => {
     mapScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyB7XNQZZPAKzsm7CkomnZA5jHGB4sHfeB4&callback=initMap")
-    window.initMap = this.initMap
+    window.initMap = this.initMap;
   }
 
-  /* Use Axios to get restaurant data from FourSquare*/
-  getRestaurants = () => {
+  // Setting up search parameters to use FourSquare API
+  getRestaurants = (query, location) => {
+    // Get FourSquare data
     const fourSquareUrl = "https://api.foursquare.com/v2/venues/explore?"
     const params = {
       client_id: "GGXCA2DKZ0EK0ID4S4SYLYTMPWFCNHOFBSBHFMOZTSJTAWX5",
       client_secret: "CKLZUO02MB5DKBQ4UCHV4Q0MT4UOV5EXPL0SPHDSE14IID4R",
       v: "20181109",
-      query: "thai",
-      near: "Simi Valley"
+      query: query,
+      near: location,
+      limit: 15
     }
 
+    // Use Axios to get restaurant data from FourSquare 
     axios.get(fourSquareUrl + new URLSearchParams(params))
     .then(results => {
       // console.log(results)
-      this.setState({allRestaurants: results.data.response.groups[0].items}, this.loadMap())
-      // console.log(this.state.allRestaurants)
+      this.setState({allRestaurants: results.data.response.groups[0].items,
+                    foundRestaurants: results.data.response.groups[0].items.slice()},
+                    this.loadMap);
+      // console.log(this.state.allRestaurants, this.state.foundRestaurants)
     })
     .catch(error => {
-      console.log(error)
-    })
+      console.log("Error!", error);
+    });
   }
 
+  // Initialize map to page
   initMap = () => {
     let map = new window.google.maps.Map(document.getElementById('map'), {
       center: {lat: 34.269447, lng: -118.781479},
+      scrollwheel: true,
       zoom: 13
     });
     
     // Create InfoWindow
+    let InfoWindow = new window.google.maps.InfoWindow();
 
-    let infowindow = new window.google.maps.InfoWindow();
-
-    this.state.allRestaurants.map(restaurant => {
+    // Get markers for search results from the allRestaurants array
+    this.state.allRestaurants.map((restaurant) => {
       // Create marker
       let marker = new window.google.maps.Marker({
         position: {lat: restaurant.venue.location.lat, lng: restaurant.venue.location.lng},
         map: map,
         title: restaurant.venue.name,
+        id: restaurant.venue.id,
+        // Animate markers when map loads
         animation: window.google.maps.Animation.DROP
       })
 
-      // Add marker to an array of markers
-      this.state.markers.push(marker)
-      console.log(this.state.markers)
+      // Add marker to markers array
+      this.state.markers.push(marker);
+      // console.log(this.state.markers)
 
-    // Old infowindow will close when new marker is clicked
+    // Create content to display within InfoWindow
      let contentString = `<h3>${restaurant.venue.name}</h3>
                           <p>${restaurant.venue.location.address}<br />
                           ${restaurant.venue.location.city}, ${restaurant.venue.location.postalCode}</p>`
 
-    // Event listener to click on marker and open infowindow
-    marker.addListener('click', function() {
-      infowindow.setContent(contentString)
+    // Event listener to click on marker and open InfoWindow
+    // Old InfoWindow will close when new marker is clicked
+    marker.addListener('click', () => {
+      // Update content of InfoWindow
+      InfoWindow.setContent(contentString);
 
-      // InfoWindow will open
-      infowindow.open(map, marker);
+      // Open InfoWindow
+      InfoWindow.open(map, marker);
 
       // Add animation to Markers
-      //https://developers.google.com/maps/documentation/javascript/examples/marker-animations
+      // https://developers.google.com/maps/documentation/javascript/examples/marker-animations
+      // Set bounce animation to two seconds
       if (marker.getAnimation() !== null) {
         marker.setAnimation(null);
       } else {
         marker.setAnimation(window.google.maps.Animation.BOUNCE);
-      }      
+      } setTimeout(() => {marker.setAnimation(null)}, 2000);
       });
+    })
+  }
+
+  // Filter and search for restaurant from the sidebar
+  updateSearch = (search) => {
+    this.setState({search})
+    // Set marker visibility to true to show all markers
+    this.state.markers.map((marker) => marker.setVisible(true))
+
+    if(search) {
+      // To reduce error, all user input will be converted to lowercase
+      let searchResults = this.state.allRestaurants.filter(restaurant => restaurant.venue.name.toLowerCase().includes(search.toLowerCase()));
+      this.setState({searchResults})
+
+      // Create variable to hide markers from user input
+      let hideMarkers = this.state.markers.filter(marker => searchResults.every(restaurant =>  restaurant.venue.name !== marker.title))
+
+      // Loop over the markers and hide the markers that doesn't match
+      // what the user type in search
+      hideMarkers.forEach(marker => marker.setVisible(false))
+    } else {
+      this.setState({ searchResults: this.state.allRestaurants})
+      this.state.markers.forEach(marker => marker.setVisible(true))
+    }
+  }
+
+  /*** ***/
+  restaurantItemClick = (item) => {
+    this.state.markers.map(marker => {
+      if(marker.title === item) {
+        window.google.maps.event.trigger(marker, "click")
+      }
     })
   }
 
   render() {
     return (
-      <main>
-        <header>
-          <span className="menu fas fa-bars"></span>
-          <h1>Thai Food - Simi Valley, CA</h1>
-        </header>
-        <RestaurantList />
-        <div id="map"></div>
+      <main id="app">
+        <header id="header" aria-label="Header" role="heading">
+        <h2>Thai Restaurants, Simi Valley</h2>
+        </header>        
+          <RestaurantSidebar aria-label="Search Bar" role="search"
+            allRestaurants={this.state.allRestaurants}
+            
+            markers={this.state.markers}
+            search={this.state.search}
+            updateSearch={this.updateSearch}
+            restaurantItemClick={this.restaurantItemClick}
+          />
+          <Map />
       </main>
     );
   }
 }
 
-// <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"
-//     async defer></script>
+// Shows how to load Google Maps Library
+// https://www.klaasnotfound.com/2016/11/06/making-google-maps-work-with-react/
+// Also credit to Elharony for breaking down the steps to creating the script
+// to load Google Maps API
 function mapScript(url) {
   let index = window.document.getElementsByTagName("script")[0]
   let script = window.document.createElement("script")
