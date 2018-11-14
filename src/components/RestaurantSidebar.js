@@ -5,7 +5,7 @@ class RestaurantSidebar extends Component {
 
   render() {
     return (
-      <div role="application">
+      <div role="application" id="sidebar">
         <label>Find A Restaurant</label>
   	    <input
   	      aria-label="Restaurant Filter"

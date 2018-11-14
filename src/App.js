@@ -11,7 +11,7 @@ class App extends Component {
       allRestaurants: [],
       foundRestaurants: [],
       markers: [],
-      search: '',
+      search: ''
     }
   }
 
@@ -43,7 +43,7 @@ class App extends Component {
     .then(results => {
       // console.log(results)
       this.setState({allRestaurants: results.data.response.groups[0].items,
-                    foundRestaurants: results.data.response.groups[0].items.slice()},
+                    foundRestaurants: results.data.response.groups[0].items},
                     this.loadMap);
       // console.log(this.state.allRestaurants, this.state.foundRestaurants)
     })
@@ -107,24 +107,28 @@ class App extends Component {
 
   // Filter and search for restaurant from the sidebar
   updateSearch = (search) => {
-    this.setState({search})
+    this.setState({search});
     // Set marker visibility to true to show all markers
-    this.state.markers.map((marker) => marker.setVisible(true))
+    this.state.markers.map((marker) => marker.setVisible(true));
 
     if(search) {
       // To reduce error, all user input will be converted to lowercase
       let searchResults = this.state.allRestaurants.filter(restaurant => restaurant.venue.name.toLowerCase().includes(search.toLowerCase()));
-      this.setState({searchResults})
+      this.setState({allRestaurants: searchResults});
 
       // Create variable to hide markers from user input
-      let hideMarkers = this.state.markers.filter(marker => searchResults.every(restaurant =>  restaurant.venue.name !== marker.title))
+      // Using the every() method to check if all element in the array pass the test
+      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every
+      let hideMarkers = this.state.markers.filter(marker => searchResults.every(restaurant =>  restaurant.venue.name !== marker.title));
 
       // Loop over the markers and hide the markers that doesn't match
       // what the user type in search
-      hideMarkers.forEach(marker => marker.setVisible(false))
+      hideMarkers.forEach(marker => marker.setVisible(false));
     } else {
-      this.setState({ searchResults: this.state.allRestaurants})
-      this.state.markers.forEach(marker => marker.setVisible(true))
+      // Keep markers display for results from search
+      this.setState({searchResults: this.state.allRestaurants});
+      // Set visibility of markers from search to visible
+      this.state.markers.forEach(marker => marker.setVisible(true));
     }
   }
 
@@ -139,13 +143,16 @@ class App extends Component {
 
   render() {
     return (
-      <main id="app">
+      <main id="App">
         <header id="header" aria-label="Header" role="heading">
+        <button className="hamButton">
+          <i className="fa fa-bars"></i>
+        </button>
         <h2>Thai Restaurants, Simi Valley</h2>
         </header>        
           <RestaurantSidebar aria-label="Search Bar" role="search"
             allRestaurants={this.state.allRestaurants}
-            
+            updateRestaurant={this.updateRestaurant}
             markers={this.state.markers}
             search={this.state.search}
             updateSearch={this.updateSearch}
@@ -168,6 +175,9 @@ function mapScript(url) {
   script.async = true
   script.defer = true
   index.parentNode.insertBefore(script, index)
+  script.onerror = function() {
+    alert("Google Maps Could Not Load. Try Again Later");
+  }
 }
 
 export default App;
