@@ -9,7 +9,7 @@ class App extends Component {
     super(props);
     this.state = {
       allRestaurants: [],
-      // foundRestaurants: [],
+      foundRestaurants: [],
       markers: [],
       search: ''
     }
@@ -63,6 +63,7 @@ class App extends Component {
     
     // Create InfoWindow
     let InfoWindow = new window.google.maps.InfoWindow();
+    let allMarkers = [];
 
     // Get markers for search results from the allRestaurants array
     this.state.allRestaurants.map((restaurant) => {
@@ -77,7 +78,8 @@ class App extends Component {
       })
 
       // Add marker to markers array
-      this.state.markers.push(marker);
+      // this.state.markers.push(marker);
+      allMarkers.push(marker);
       // console.log(this.state.markers)
 
     // Create content to display within InfoWindow
@@ -103,38 +105,41 @@ class App extends Component {
         marker.setAnimation(window.google.maps.Animation.BOUNCE);
       } setTimeout(() => {marker.setAnimation(null)}, 2000);
       });
-    })
+    });
+    this.setState({markers: allMarkers, foundRestaurants: allMarkers});
   }
 
   // Filter and search for restaurant from the sidebar
-  // updateSearch = (search) => {
-  //   this.setState({search});
-  //   // Set marker visibility to true to show all markers
-  //   // this.state.markers.map((marker) => marker.setVisible(true));
+  updateSearch = (search) => {
+    this.setState({search});
+    // Set marker visibility to true to show all markers
+    // this.state.markers.map((marker) => marker.setVisible(true));
 
-  //   // let allRestaurants = this.state.allRestaurants;
-  //   if(search) {
-  //     // To reduce error, all user input will be converted to lowercase
-  //     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes
-  //     let searchResults = this.state.allRestaurants.filter(restaurant => restaurant.venue.name.toLowerCase().includes(search.toLowerCase()));
-  //     this.setState({foundRestaurants: searchResults});
-  //     // this.updateRestaurant(searchResults);
-  //     // Create variable to hide markers from user input
-  //     // Using the every() method to check if all element in the array pass the test
-  //     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every
-  //     let hideMarkers = this.state.markers.filter(marker => searchResults.every(restaurant =>  restaurant.venue.name !== marker.name));
+    // let allRestaurants = this.state.allRestaurants;
+    if(search.length > 0) {
+      this.state.markers.forEach((marker) => marker.setVisible(false));
+      // To reduce error, all user input will be converted to lowercase
+      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes
+      let searchResults = this.state.markers.filter(restaurant => restaurant.name.toLowerCase().includes(search.toLowerCase()));
+      searchResults.forEach((marker) => marker.setVisible(true));
+      this.setState({foundRestaurants: searchResults});
+      // this.updateRestaurant(searchResults);
+      // Create variable to hide markers from user input
+      // Using the every() method to check if all element in the array pass the test
+      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every
+      // let hideMarkers = this.state.markers.filter(marker => searchResults.every(restaurant =>  restaurant.venue.name !== marker.name));
 
-  //     // Loop over the markers and hide the markers that doesn't match
-  //     // what the user type in search
-  //     hideMarkers.forEach(marker => marker.setVisible(false));
-  //   } else {
-  //     // Keep markers display for results from search
-      
-  //     this.setState({foundRestaurants: this.state.allRestaurants});
-  //     // Set visibility of markers from search to visible
-  //     this.state.markers.forEach(marker => marker.setVisible(true));
-  //   }
-  // }
+      // Loop over the markers and hide the markers that doesn't match
+      // what the user type in search
+      // hideMarkers.forEach(marker => marker.setVisible(false));
+    } else {
+      // Keep markers display for results from search
+      this.setState({foundRestaurants: this.state.markers});
+      // Set visibility of markers from search to visible
+      this.state.foundRestaurants.forEach(marker => marker.setVisible(true));
+      this.state.markers.forEach(marker => marker.setVisible(true));
+    }
+  }
 
   // Update restaurant list from search
   // updateRestaurant = (newRestaurant) => {
@@ -164,7 +169,7 @@ class App extends Component {
             foundRestaurants={this.state.allRestaurants}
             markers={this.state.markers}
             search={this.state.search}
-            updateSearch={this.props.updateSearch}
+            updateSearch={this.updateSearch}
             restaurantItemClick={this.props.restaurantItemClick}
             
           />
