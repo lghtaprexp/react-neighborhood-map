@@ -35,21 +35,19 @@ class App extends Component {
       v: "20181109",
       query: query,
       near: location,
-      limit: 15
+      limit: 20
     }
 
     // Use Axios to get restaurant data from FourSquare 
     axios.get(fourSquareUrl + new URLSearchParams(params))
     .then(results => {
       // console.log(results)
-      this.setState({allRestaurants: results.data.response.groups[0].items,
-                    // foundRestaurants: results.data.response.groups[0].items
-                    },
+      this.setState({allRestaurants: results.data.response.groups[0].items},
                     this.loadMap);
       // console.log(this.state.allRestaurants, this.state.foundRestaurants)
     })
     .catch(error => {
-      console.log("Error!", error);
+      console.log("Error! Unable to get FourSquare data.", error);
     });
   }
 
@@ -77,11 +75,11 @@ class App extends Component {
         animation: window.google.maps.Animation.DROP
       })
 
-      // Add marker to markers array
+      // Add marker to allMarkers array
       // this.state.markers.push(marker);
       allMarkers.push(marker);
       // console.log(this.state.markers)
-
+      this.setState({markers: allMarkers, foundRestaurants: allMarkers});
     // Create content to display within InfoWindow
      let contentString = `<h3>${restaurant.venue.name}</h3>
                           <p>${restaurant.venue.location.address}<br />
@@ -106,7 +104,7 @@ class App extends Component {
       } setTimeout(() => {marker.setAnimation(null)}, 2000);
       });
     });
-    this.setState({markers: allMarkers, foundRestaurants: allMarkers});
+    
   }
 
   // Filter and search for restaurant from the sidebar
@@ -146,15 +144,39 @@ class App extends Component {
   //   this.setState({foundRestaurants: newRestaurant})
   // }
 
+  // Filter and search for restaurant from the sidebar
+  // updateSearch = (search) => {
+  // // Set marker visibility to true to show all markers
+  // // Create a list of found restaurant from all the
+  // // restaurants in the area    
+  // // To reduce error, all user input will be converted to lowercase
+  // let searchResults = this.props.markers.filter(restaurant => restaurant.venue.name.toLowerCase().includes(search.toLowerCase()));
+  // // Set the result of foundRestaurants to the filtered
+  // // search result
+
+  // // Use a loop to set visibility of markers
+  // // base on what the user input in search bar
+  // this.props.markers.forEach(marker => {
+  // if(marker.name.toLowerCase().includes(search.toLowerCase())) {
+  //   marker.setVisible(true);
+  // } else {
+  //   marker.setVisible(false);
+  // }
+  // // console.log(marker);
+  // });
+  // this.setState({foundRestaurants: searchResults, search});
+  // console.log(this.foundRestaurants)    
+  // }
+
   // Click event allows user to click on item from filtered list and
   // a marker correlated to the item clicked will animate
-  // restaurantItemClick = (item) => {
-  //   this.state.markers.map(marker => {
-  //     if(marker.title === item) {
-  //       window.google.maps.event.trigger(marker, "click")
-  //     }
-  //   })
-  // }
+  restaurantItemClick = (name) => {
+    this.state.markers.map(marker => {
+      if(marker.name === name) {
+        window.google.maps.event.trigger(marker, "click")
+      }
+    })
+  }
 
   render() {
     return (
@@ -166,12 +188,11 @@ class App extends Component {
         <h2>Thai Restaurants, Simi Valley</h2>
         </header>        
           <RestaurantSidebar aria-label="Search Bar" role="search"
-            foundRestaurants={this.state.allRestaurants}
+            foundRestaurants={this.state.foundRestaurants}
             markers={this.state.markers}
             search={this.state.search}
             updateSearch={this.updateSearch}
-            restaurantItemClick={this.props.restaurantItemClick}
-            
+            restaurantItemClick={this.restaurantItemClick}            
           />
           <Map />
       </main>
