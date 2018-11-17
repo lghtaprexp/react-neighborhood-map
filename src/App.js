@@ -11,7 +11,8 @@ class App extends Component {
       allRestaurants: [],
       foundRestaurants: [],
       markers: [],
-      search: ''
+      search: '',
+      center: {lat: 34.269447, lng: -118.781479}
     }
   }
 
@@ -54,13 +55,17 @@ class App extends Component {
   // Initialize map to page
   initMap = () => {
     let map = new window.google.maps.Map(document.getElementById('map'), {
-      center: {lat: 34.269447, lng: -118.781479},
+      center: {lat: this.state.center.lat, lng: this.state.center.lng},
       scrollwheel: true,
       zoom: 13
     });
     
     // Create InfoWindow
-    let InfoWindow = new window.google.maps.InfoWindow();
+    let InfoWindow = new window.google.maps.InfoWindow({
+      let contentString = `<h3>${restaurant.venue.name}</h3>
+                          <p>${restaurant.venue.location.address}<br />
+                          ${restaurant.venue.location.city}, ${restaurant.venue.location.postalCode}</p>`
+    });
     let allMarkers = [];
 
     // Get markers for search results from the allRestaurants array
@@ -71,6 +76,7 @@ class App extends Component {
         map: map,
         name: restaurant.venue.name,
         id: restaurant.venue.id,
+        title: 'Click for more details',
         // Animate markers when map loads
         animation: window.google.maps.Animation.DROP
       })
@@ -81,12 +87,16 @@ class App extends Component {
       // console.log(this.state.markers)
       this.setState({markers: allMarkers, foundRestaurants: allMarkers});
     // Create content to display within InfoWindow
-     let contentString = `<h3>${restaurant.venue.name}</h3>
-                          <p>${restaurant.venue.location.address}<br />
-                          ${restaurant.venue.location.city}, ${restaurant.venue.location.postalCode}</p>`
+     // let contentString = `<h3>${restaurant.venue.name}</h3>
+     //                      <p>${restaurant.venue.location.address}<br />
+     //                      ${restaurant.venue.location.city}, ${restaurant.venue.location.postalCode}</p>`
 
     // Event listener to click on marker and open InfoWindow
     // Old InfoWindow will close when new marker is clicked
+    //google.maps.event.addListener(marker, 'click', () => {
+      //InfoWindow.setContent(contentString);
+      //InfoWindow.open(map, marker);
+    //})
     marker.addListener('click', () => {
       // Update content of InfoWindow
       InfoWindow.setContent(contentString);

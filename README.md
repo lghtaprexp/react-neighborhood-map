@@ -43,3 +43,10 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 https://developers.google.com/maps/documentation/javascript/infowindows
+
+"dependencies": {
+   "axios": "^0.18.0",
+   "react": "^16.6.1",
+   "react-dom": "^16.6.1",
+   "react-scripts": "2.1.1"
+ },
