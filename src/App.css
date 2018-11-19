@@ -92,6 +92,9 @@ main#App {
   transition: transform 0.5s east-out;
 }
 
+#sidebar.open {
+  transform: translateX(0);
+}
 
 label.sidebarTitle {
   font-size: 1.4rem;

@@ -7,6 +7,7 @@ const utils = {
   // https://www.klaasnotfound.com/2016/11/06/making-google-maps-work-with-react/
   // Also credit to Elharony for breaking down the steps to creating the script
   // to load Google Maps API
+  // youtu.be/W5LhLZqj76s
   mapScript: (url) => {
   let index = window.document.getElementsByTagName("script")[0]
   let script = window.document.createElement("script")

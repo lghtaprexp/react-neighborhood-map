@@ -46,7 +46,10 @@ class App extends Component {
       limit: 15
     }
 
-    // Use Axios to get restaurant data from FourSquare 
+    // Use Axios to get restaurant data from FourSquare
+    // Thanks to Elharony for breaking down the steps to 
+    // to use Axios to get data
+    // youtu.be/dAhMIF0fNpo
     axios.get(fourSquareUrl + new URLSearchParams(params))
     .then(results => {
       // console.log(results);
@@ -165,17 +168,23 @@ class App extends Component {
   }
 
   render() {
-    return (
-      <main id="App">
-        <Header />
+    let restaurantSidebar;
+    if(this.state.showSidebar) {
+      restaurantSidebar = 
         <RestaurantSidebar
           foundRestaurants={this.state.foundRestaurants}
           markers={this.state.markers}
           search={this.state.search}
           updateSearch={this.updateSearch}
           restaurantItemClick={this.restaurantItemClick}
-          toggleSidebar={this.toggleSidebar}           
-        />
+          toggleSidebar={this.toggleSidebar}         
+        />;
+    }
+
+    return (
+      <main id="App">
+        <Header />
+        {restaurantSidebar}
         <Map />
       </main>
     );
