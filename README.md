@@ -1,52 +1,20 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Project Overview
+A single page app created by using React, Google Maps, and FourSquare API to display the Thai restaurants in Simi Valley and its neighboring cities. Google Maps API was used to display the map, and the FourSquare API was used to get the restaurant data.
 
-## Available Scripts
+## Features
+The markers represent the restaurants on the map. Clicking on a marker will display a window with additional info on the restaurant. A list of restaurants can be found on the left side of the screen. Typing in the search box can filter the restaurant name. Clicking on a restaurant from the list will animate the marker on the map and open a window to show more info.
 
-In the project directory, you can run:
+## How To Run
+* **Required** A Google Maps API key, and a FourSquare API key are required to run this app
+* Clone or download the project to your local drive
+* Open your code editor and navigate to the App.js file located in the `src` folder to replace the api keys received from Google Maps API, and FourSquare API in order to run the app
+* Replace the Google Maps API key on line 30 with your key in App.js
+* Replace the FourSquare API keys with your FourSquare ID, Secret, and Version keys on line 8-10 in App.js
+* Navigate to where the app is located and open the terminal
+* Install dependencies by running `npm install`
+* Launch app by running `npm start`
+* Default browser should launch app running in local server [http://localhost:3000](http://localhost:3000)
+* **Note** The default service worker used in this app only works in production build.
+* Run `npm run build` in terminal to run app in production build. 
 
-### `npm start`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-https://developers.google.com/maps/documentation/javascript/infowindows
-
-"dependencies": {
-   "axios": "^0.18.0",
-   "react": "^16.6.1",
-   "react-dom": "^16.6.1",
-   "react-scripts": "2.1.1"
- },
+ This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

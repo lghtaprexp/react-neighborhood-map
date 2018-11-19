@@ -13,7 +13,7 @@
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
-  display: flex;
+  display: block;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -34,10 +34,15 @@
   }
 }
 
-#map {
- height: 100vh;
- width: 65%;
+/* Optional: Makes the sample page fill the window. */
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
   }
+
+
 
 main#App {
   display: flex;
@@ -45,39 +50,85 @@ main#App {
 
 }    
 
-#sidebar {
-  max-width: 35%;
-  width: 250px;
-}
-
+/* Header */
 #header {
   width: 100%;
-  display: flex;
+  display: block;
+}
+
+.hamButton {
+  margin-left: 10px;
+  margin-right: 20px;
+  position: absolute;
+  left: 10px;
+  top: 20px;
+  background: white;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.restaurantTitle {
+  text-align: center;
+  font-size: 1.75rem;
+}
+
+/* Map */
+#map {
+ height: 100vh;
+ width: 100%;
 }
 
 /* Restaurant Sidebar*/
-li.item {
-    list-style: none;
-}
-
-
-/* Optional: Makes the sample page fill the window. */
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-  }
-
-#restaurantList {
+#sidebar {
+  max-width: 75%;
   width: 300px;
-  max-width: 35%;
-  height:calc(100vh - 50px);
   position: fixed;
   top: 0;
-
+  left: 0;
+  transform: translateX(-100vw);
+  background-color: lightgrey;
+  height: 100vh;
+  z-index: 100;
+  transition: transform 0.5s east-out;
 }
 
 
+label.sidebarTitle {
+  font-size: 1.4rem;
+  margin-bottom: 1.1rem;
+  display: block;
+  text-align: center;
+}
+
+.inputFilter {
+  padding: 0.5rem; 
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.listItem {
+  list-style: none;
+  padding: 0;
+  margin: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.listItem li {
+  padding: 5px;
+  cursor: pointer;
+  border: 1px solid black;
+  margin-bottom: 10px;
+}
+
+.listItem li:hover,
+.listItem li:hover {
+  border-radius: 5px;
+  color: orange;
+  background-color: gray;
+}
+
+/* Media Queries */
 @media all and (max-width: 360px) {
     .page-title {
         font-size: 1.2rem
