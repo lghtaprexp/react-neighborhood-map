@@ -21,11 +21,12 @@ const FS_SECRET = "REPLACE TEXT WITH YOUR PERSONAL FOURSQUARE CLIENT SECRET";
 const FS_VERSION = "REPLACE TEXT WITH YOUR PERSONAL FOURSQUARE VERSION";
 ```
 * Navigate to where the app is located and open the terminal
-* Install dependencies by running `npm install`
-* Launch app by running `npm start`
-* Default browser should launch app running in local server [http://localhost:3000](http://localhost:3000)
+* Install dependencies by entering `npm install`
+* Launch app by entering `npm start`
+* Default browser should launch app running in your local server [http://localhost:3000](http://localhost:3000)
 * **Note** The default service worker used in this app only works in production build.
-* Run `npm run build` in terminal to run app in production build. 
+* To run app in production build, enter `npm run build`, then `server -s build` in the terminal.
+* App should now be running in your local server [http://localhost:5000](http://localhost:5000)
 
 ## Dependencies
 * [Axios](https://www.npmjs.com/package/axios)

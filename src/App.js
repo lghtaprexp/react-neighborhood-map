@@ -4,6 +4,7 @@ import axios from 'axios';
 import RestaurantSidebar from './components/RestaurantSidebar';
 import Map from './components/Map';
 import Header from './components/Header';
+import ErrorBoundaries from './components/ErrorBoundaries';
 import utils from './utils'
 
 const FS_ID = "GGXCA2DKZ0EK0ID4S4SYLYTMPWFCNHOFBSBHFMOZTSJTAWX5";
@@ -161,7 +162,7 @@ class App extends Component {
 
   // Toggle sidebar
   toggleSidebar = () => {
-   // console.log("clicked");
+   console.log("clicked");
    this.setState((prevState) => {
     return {showSidebar: !prevState.showSidebar};
    });
@@ -176,16 +177,17 @@ class App extends Component {
           markers={this.state.markers}
           search={this.state.search}
           updateSearch={this.updateSearch}
-          restaurantItemClick={this.restaurantItemClick}
-          toggleSidebar={this.toggleSidebar}         
+          restaurantItemClick={this.restaurantItemClick}       
         />;
     }
 
     return (
       <main id="App">
-        <Header />
-        {restaurantSidebar}
-        <Map />
+        <ErrorBoundaries>
+          <Header toggleSidebar={this.toggleSidebar} />
+          {restaurantSidebar}
+          <Map />
+        </ErrorBoundaries>
       </main>
     );
   }
