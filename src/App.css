@@ -1,40 +1,3 @@
-.container {
-  text-align: center;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: block;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Optional: Makes the sample page fill the window. */
 html, body {
   height: 100%;
   width: 100%;
@@ -42,18 +5,16 @@ html, body {
   padding: 0;
   }
 
-
-
 main#App {
   display: flex;
   flex-wrap: wrap;
-
 }    
 
 /* Header */
 #header {
   width: 100%;
   display: block;
+  height: 70px;
 }
 
 .hamButton {
@@ -74,7 +35,7 @@ main#App {
 
 /* Map */
 #map {
- height: 100vh;
+ height: calc(100vh - 8.6vh);
  width: 100%;
 }
 
@@ -83,17 +44,11 @@ main#App {
   max-width: 75%;
   width: 300px;
   position: fixed;
-  top: 0;
+  top: 70px;
   left: 0;
-  transform: translateX(-100vw);
   background-color: lightgrey;
   height: 100vh;
   z-index: 100;
-  transition: transform 0.5s east-out;
-}
-
-#sidebar.open {
-  transform: translateX(0);
 }
 
 label.sidebarTitle {
@@ -104,7 +59,7 @@ label.sidebarTitle {
 }
 
 .inputFilter {
-  padding: 0.5rem; 
+  padding: 0.3rem; 
   width: 100%;
   box-sizing: border-box;
 }
@@ -115,10 +70,11 @@ label.sidebarTitle {
   margin: 5px;
   display: flex;
   flex-direction: column;
+  overflow: auto;
 }
 
 .listItem li {
-  padding: 5px;
+  padding: 3px;
   cursor: pointer;
   border: 1px solid black;
   margin-bottom: 10px;
@@ -132,14 +88,24 @@ label.sidebarTitle {
 }
 
 /* Media Queries */
-@media all and (max-width: 360px) {
-    .page-title {
-        font-size: 1.2rem
-    }
+@media all and (max-width: 420px) {
+  #header {
+    display: flex;
+  }
+  .hamButton {
+  position: relative;
+
+  }
+  .restaurantTitle {
+  text-align: center;
+  font-size: 1.5rem;
+  }
 }
 
-@media all and (max-width: 767px) {
-    .toggle-menu {
-        display: block
-    }
+@media all and (min-width: 421px) {
+  #header {
+  width: 100%;
+  display: block;
+  height: 70px;
+ }
 }

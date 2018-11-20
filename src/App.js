@@ -1,3 +1,9 @@
+// Acknowledgements:
+// Ryan Waite and Elharony for the tutorials
+// The Slack community and Project Coaches for
+// additional resources and pointing me to
+// the right direction when I was stuck.
+
 import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios';
@@ -5,8 +11,9 @@ import RestaurantSidebar from './components/RestaurantSidebar';
 import Map from './components/Map';
 import Header from './components/Header';
 import ErrorBoundaries from './components/ErrorBoundaries';
-import utils from './utils'
+import utils from './utils';
 
+// API key to be replace by user's own API key
 const FS_ID = "GGXCA2DKZ0EK0ID4S4SYLYTMPWFCNHOFBSBHFMOZTSJTAWX5";
 const FS_SECRET = "CKLZUO02MB5DKBQ4UCHV4Q0MT4UOV5EXPL0SPHDSE14IID4R";
 const FS_VERSION = "20181109";
@@ -30,6 +37,7 @@ class App extends Component {
 
   // Load Google Maps script asynchronously
   loadMap = () => {
+    // API key to be replace by user's own API key
     utils.mapScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyB7XNQZZPAKzsm7CkomnZA5jHGB4sHfeB4&callback=initMap")
     window.initMap = this.initMap;
   }
@@ -91,7 +99,7 @@ class App extends Component {
         animation: window.google.maps.Animation.DROP
       })
 
-      // Add marker to allMarkers array      
+      // Add marker to allMarkers array
       allMarkers.push(marker);
       // console.log(allMarkers)
       this.setState({markers: allMarkers, foundRestaurants: allMarkers});
@@ -102,8 +110,8 @@ class App extends Component {
 
       // Function to open infoWindow
       let openInfoWindow = () => {
-        // Set the content of InfoWindow with the restaurant's name,
-        // and address
+        // Set the content of InfoWindow with the restaurant's
+        // name, and address
         infoWindow.setContent(contentString);
         // Open InfoWindow      
         infoWindow.open(map, marker);
@@ -133,36 +141,39 @@ class App extends Component {
 
   // Filter and search for restaurant within the sidebar
   updateSearch = (search) => {    
-    if(search.length > 0) {
+    if (search.length > 0) {
       this.state.markers.map((marker) => marker.setVisible(false));
       // To reduce error, all user input will be converted to lowercase
       // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes
       let searchResults = this.state.markers.filter(restaurant => restaurant.name.toLowerCase().includes(search.toLowerCase()));
       searchResults.map((marker) => marker.setVisible(true));
-      this.setState({foundRestaurants: searchResults, search});
-      
+      this.setState({foundRestaurants: searchResults, search});      
     } else {
       // Keep markers display for results from search
       this.setState({foundRestaurants: this.state.markers, search});
       // Set visibility of markers from search to visible
-      this.state.foundRestaurants.map(marker => marker.setVisible(true));
-      this.state.markers.map(marker => marker.setVisible(true));
+      this.state.foundRestaurants.map((marker) => marker.setVisible(true));
+      this.state.markers.map((marker) => marker.setVisible(true));
     }
   }
 
-  // Click event allows user to click on item from filtered list and
-  // a marker correlated to the item clicked will animate
+  // Click event allows user to click on item from filtered
+  // list and a marker correlated to the item clicked
+  // will animate
   restaurantItemClick = (name) => {
     this.state.markers.map((marker) => {
-      if(marker.name === name) {
-        window.google.maps.event.trigger(marker, "click")
+      if (marker.name === name) {
+        window.google.maps.event.trigger(marker, "click");
       }
     })
   }
 
-  // Toggle sidebar
+  // Click event to toggle sidebar open and close
+  // Referenced the following Youtube tutorial for
+  // basic concept on how to toggle a menu bar
+  // youtu.be/l6nmysZKHFU
   toggleSidebar = () => {
-   console.log("clicked");
+   // console.log("clicked");
    this.setState((prevState) => {
     return {showSidebar: !prevState.showSidebar};
    });
@@ -177,7 +188,7 @@ class App extends Component {
           markers={this.state.markers}
           search={this.state.search}
           updateSearch={this.updateSearch}
-          restaurantItemClick={this.restaurantItemClick}       
+          restaurantItemClick={this.restaurantItemClick}
         />;
     }
 

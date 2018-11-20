@@ -1,4 +1,4 @@
-// Learned to create a utils file with a const object
+// Learned to create a utils file using a const object
 // with functions from Stackoverflow
 // https://stackoverflow.com/questions/38402025/how-to-create-helper-file-full-of-functions-in-react-native
 

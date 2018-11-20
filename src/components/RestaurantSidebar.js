@@ -5,7 +5,7 @@ class RestaurantSidebar extends Component {
 
   render() {
     return (
-      <div id="sidebar" aria-label="Search Bar" role="search">
+      <div id="sidebar" aria-label="Search For a restaurant" role="searchbox">
         <label className="sidebarTitle">Find A Restaurant</label>
         <input
           aria-label="Restaurant Filter"
@@ -21,12 +21,12 @@ class RestaurantSidebar extends Component {
             className="listItem"
             key={index}
             role="menuitem"
-            aria-label="Restaurant"
+            aria-label="Restaurant list"
             onClick={() => {this.props.restaurantItemClick(restaurant.name)}}>
             <li key={index}>{restaurant.name}</li>
           </ul>))}
       </div>
-  )
+    );
   }
 }
 
