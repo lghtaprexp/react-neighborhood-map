@@ -22,7 +22,11 @@ class RestaurantSidebar extends Component {
             key={index}
             role="menuitem"
             aria-label="Restaurant list"
-            onClick={() => {this.props.restaurantItemClick(restaurant.name)}}>
+            tabindex="0"
+            onClick={() => {this.props.restaurantItemClick(restaurant.name)}}
+            onKeyPress={(e) => {
+              if(e.key === " " || e.key === "Enter") {
+                this.props.restaurantItemClick(restaurant.name)}}}>
             <li key={index}>{restaurant.name}</li>
           </ul>))}
       </div>

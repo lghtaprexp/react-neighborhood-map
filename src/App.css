@@ -41,7 +41,7 @@ main#App {
 
 /* Restaurant Sidebar*/
 #sidebar {
-  max-width: 75%;
+  max-width: 65%;
   width: 300px;
   position: fixed;
   top: 70px;
@@ -49,6 +49,7 @@ main#App {
   background-color: lightgrey;
   height: 100vh;
   z-index: 100;
+  overflow-y: scroll;
 }
 
 label.sidebarTitle {
@@ -88,24 +89,31 @@ label.sidebarTitle {
 }
 
 /* Media Queries */
-@media all and (max-width: 420px) {
+@media all and (max-width: 350px) {
   #header {
-    display: flex;
+    display: block;
   }
-  .hamButton {
-  position: relative;
-
-  }
+ 
   .restaurantTitle {
-  text-align: center;
-  font-size: 1.5rem;
+    text-align: center;
+    font-size: 1.2rem;
+    padding-top: 0.55rem;
+    padding-left: 0.60rem;
+  }
+
+  #sidebar {
+    max-width: 50%;
   }
 }
 
-@media all and (min-width: 421px) {
-  #header {
-  width: 100%;
-  display: block;
-  height: 70px;
- }
+@media all and (min-width: 351px) and (max-width: 450px) {
+ .restaurantTitle {
+    text-align: center;
+    font-size: 1.40rem;
+    padding-top: 0.55rem;
+  }
+
+  #sidebar {
+    max-width: 50%;
+  }
 }
